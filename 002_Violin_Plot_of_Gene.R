@@ -14,6 +14,7 @@ df <- data.frame(row.names = row.names(input_t), Hif1a=input_t$Hif1a)
 ## Mark the source
 for (i in 1:nrow(df)) {
     df[i,2] <- strsplit(row.names(df)[i], "_")
+    ## df[i,3] <- gsub('\\w+\\d+(.+)_(\\w+)', '\\1', df[i,1])
 }
 names(df)[2] <- "Sample"
 head(df)
@@ -26,4 +27,5 @@ p + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()
           axis.title = element_text(size = 15, face = "bold", hjust = 0.5, color = "black"),
           axis.text.x = element_text(size = 12, face = "bold", hjust = 1, color = "black", angle = 45),
           axis.text.y = element_text(size = 12, face = "bold", hjust = 0.5, color = "black"))+
-    ylim(0.1,NA) + geom_boxplot(width=0.2)
+    ylim(0.1,NA) + geom_boxplot(width=0.2) +
+    scale_x_discrete(limits=c("NN23Liver", "NN36Liver", "NN43Liver", "AD43Liver", "NN23Tumor", "NN36Tumor", "NN43Tumor", "AD43Tumor", "NN23Lung", "NN36Lung")) # Change the order of samples.
