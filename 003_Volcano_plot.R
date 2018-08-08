@@ -1,22 +1,27 @@
-# Load packages
+## This script is made for plotting volcano figure in DE/DA analysis
+
+## Configure Environment
 library(dplyr)
 library(ggplot2)
 library(ggrepel)
 
-
+## Read the DE/DA output, including GeneSymbol/GeneSet, G1_Expr/Activity, G2_Expr/Activity, Foldchang, Pvalue and FDR
 dir <- "/Volumes/yu3grp/scRNASeq/yu3grp/metastasis/01_Liver_cancer/03_cluster_genes/02_celltypes/01_Tumor_Cells/lowQDTCs_excluded/11_BulkEarly_subcluster/BulkEarly_DE"
-
 input <- read.table(paste0(dir, "/01_BulkEarly_DE_Gene_Left_VS_Right.txt"), header = T, sep = "\t")
-input <- input[,c(1,4,5)]
-row.names(input) <- input$GeneSymbol
-input[,3] <- ifelse(input[,3]==0, 1e-300, input[,3])
-input <- mutate(input, Sig=ifelse(input[,3]<0.01, "Yes", "No"))
 
+## Formatting
+input <- input[,c(1,4,5)] # Pick the GeneSymbol/GeneSet, Foldchange and Pvalue
+row.names(input) <- input$GeneSymbol
+input[,3] <- ifelse(input[,3]==0, 1e-300, input[,3]) # Avoid the error by log-transform of '0'
+input <- mutate(input, Sig=ifelse(input[,3]<0.01, "Yes", "No")) # Add a new column to save significance
+
+## Get the subgrounps
 all <- input
 up <- subset(input, input[,3]<=0.01 & input[,2]>=log2(1.5))
 down <- subset(input, input[,3]<=0.01 & input[,2]<=log2(2/3))
-marked <- filter(input, input[,3]<=0.01 & (input[,2]>=1.5 | input[,2]<=-0.7))
+marked <- filter(input, input[,3]<=0.01 & (input[,2]>=1.5 | input[,2]<=-0.7)) # Select the genes to mark names on
 
+## Visulization
 p <- ggplot(all, aes(x = all[,2], y = -log10(all[,3])))
 p <- p + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.background = element_rect(fill = "white", color = "black", size = 1)) +
     geom_point(size = 0.8, colour = "grey") + labs(x = "Log2 (Fold Change)", y = "-Log10 (P-value)") +
