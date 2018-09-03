@@ -26,6 +26,8 @@ for(i in 1:n){
     label[i] <- i;
 }
 df1 <- data.frame(x_pose, y_pose, label)
+
+## 1 Specific colors automatically
 p <- ggplot() +
     geom_point(data=df, aes(x=x_tsne, y=y_tsne, color=as.factor(c)), size=0.3) +
     xlab("MICA-1") + ylab("MICA-2") +
@@ -38,4 +40,23 @@ p <- ggplot() +
           axis.title=element_text(size=14,face="bold"),
           legend.text = element_text(size=12),
           legend.title = element_text(size=14,face="bold"))
+ggsave(output, plot = p, width = 12, height = 12)
+
+## Specific colors manually
+p <- ggplot() +
+    geom_point(data=df[df$c %in% c(1, 3), ], aes(x=x_tsne, y=y_tsne), color="darkorchid1", size=0.5) +
+    geom_point(data=df[df$c %in% c(2), ], aes(x=x_tsne, y=y_tsne), color="magenta", size=0.5) +
+    geom_point(data=df[df$c %in% c(4), ], aes(x=x_tsne, y=y_tsne), color="indianred1", size=0.5) +
+    geom_point(data=df[df$c %in% c(5), ], aes(x=x_tsne, y=y_tsne), color="red", size=0.5) +
+    geom_point(data=df[df$c %in% c(6), ], aes(x=x_tsne, y=y_tsne), color="chartreuse3", size=0.5) +
+    geom_point(data=df[df$c %in% c(7), ], aes(x=x_tsne, y=y_tsne), color="royalblue", size=0.5) +
+    geom_point(data=df[df$c %in% c(8), ], aes(x=x_tsne, y=y_tsne), color="mediumseagreen", size=0.5) +
+    geom_point(data=df[df$y_tsne>120, ], aes(x=x_tsne, y=y_tsne), color="turquoise3", size=0.5) +
+    geom_point(data=df[(df$x_tsne>0 & df$y_tsne < -130), ], aes(x=x_tsne, y=y_tsne), color="orange", size=0.5) +
+    xlab("MICA-1") + ylab("MICA-2") +
+    ggtitle(paste0("Combined_Total", " (", toString(n), ")", collapse = '')[1]) +
+    theme(plot.title = element_text(size=25, margin=margin(t=20, b=10)),
+          axis.text=element_text(size=12),
+          axis.title=element_text(size=14,face="bold"),
+          legend.position = "NA")
 ggsave(output, plot = p, width = 12, height = 12)
