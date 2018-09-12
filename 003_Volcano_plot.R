@@ -33,5 +33,7 @@ p <- p + theme(panel.grid.major = element_blank(), panel.grid.minor = element_bl
     geom_hline(aes(yintercept=2), linetype = "dashed", colour = "black") +
     geom_vline(aes(xintercept=log2(3/2)), linetype = "dashed", colour = "black") + 
     geom_vline(aes(xintercept=log2(2/3)), linetype = "dashed", colour = "black") +
-    geom_text_repel(data=marked, aes(label=marked$GeneSymbol, x = marked[,2], y = -log10(marked[,3])), size = 3)
+    geom_text_repel(data=marked, aes(label=marked$GeneSymbol, x = marked[,2], y = -log10(marked[,3])), size = 3) +
+    annotate("text", x=2, y=15, label=paste0("Up-regulated: ", dim(up)[1]), colour="red", fontface="bold", size=5) +
+    annotate("text", x=-2, y=15, label=paste0("Down-regulated: ", dim(down)[1]), colour="blue", fontface="bold", size=5)
 ggsave(filename = paste0(dir, "/01_BulkEarly_DE_Gene_Left_VS_Right.pdf"), p, width = 10, height = 10, units = "in")
