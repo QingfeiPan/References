@@ -60,3 +60,54 @@ p <- ggplot() +
           axis.title=element_text(size=14,face="bold"),
           legend.position = "NA")
 ggsave(output, plot = p, width = 12, height = 12)
+
+
+
+
+
+
+
+library(ggplot2)
+
+dir <- "/Volumes/yu3grp/scRNASeq/yu3grp/metastasis/02_Breast_cancer/03_cluster_genes/02_cell_types"
+
+input <- read.table(paste0(dir, "/00_s1_cellType_info.txt"), header = T, sep = "\t")
+df <- data.frame(input)
+
+## By cell types
+ggplot() + 
+    geom_point(data=df[df$label == 1, ], aes(x=X, y=Y), color="turquoise3", size=0.2) +
+    geom_point(data=df[df$label == 2, ], aes(x=X, y=Y), color="darkorchid1", size=0.2) +
+    geom_point(data=df[df$label == 3, ], aes(x=X, y=Y), color="magenta", size=0.2) +
+    geom_point(data=df[df$label == 4, ], aes(x=X, y=Y), color="indianred1", size=0.2) +
+    geom_point(data=df[df$label == 5, ], aes(x=X, y=Y), color="red", size=0.2) +
+    geom_point(data=df[df$label == 6, ], aes(x=X, y=Y), color="chartreuse3", size=0.2) +
+    geom_point(data=df[df$label == 7, ], aes(x=X, y=Y), color="royalblue", size=0.2) +
+    geom_point(data=df[df$label == 8, ], aes(x=X, y=Y), color="mediumseagreen", size=0.2) +
+    geom_point(data=df[df$label == 9, ], aes(x=X, y=Y), color="#37f1a8", size=0.2) +
+    geom_point(data=df[df$label == 10, ], aes(x=X, y=Y), color="#f1a837", size=0.2) +
+    geom_point(data=df[df$label == 11, ], aes(x=X, y=Y), color="blue", size=0.2) +
+    ##theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.background = element_rect(fill = "white", color = "black", size = 1)) +
+    geom_point(size = 0.2) +
+    ##geom_point(cancer_sel_btl, mapping =  aes(x=X, y=Y), color = "red", size = 0.5) +
+    xlab("MICA-1") + ylab("MICA-2") +
+    xlim(-120,120) + ylim(-120, 120) +
+    theme(axis.text=element_text(size=12, colour = "black", face = "bold"), axis.title=element_text(size=14,face="bold"),
+          legend.position = "right", legend.text = element_text(size=12), legend.title = element_text(size=14,face="bold"))
+p
+ggsave(paste0(outdir, "/01_cancerCell_comparation.pdf"), plot = p, width = 8, height = 6)
+ggsave(paste0(outdir, "/01_cancerCell_comparation.jpg"), plot = p, width = 8, height = 6)
+
+## By sources
+p <- ggplot(cluster_new, aes(x=X, y=Y, color = Group)) + 
+    ##theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.background = element_rect(fill = "white", color = "black", size = 1)) +
+    geom_point(size = 0.2) +
+    ##geom_point(cancer_sel_btl, mapping =  aes(x=X, y=Y), color = "red", size = 0.5) +
+    xlab("MICA-1") + ylab("MICA-2") +
+    xlim(-120,120) + ylim(-120, 120) +
+    guides(col = guide_legend(override.aes = list(size=10))) +
+    theme(axis.text=element_text(size=12, colour = "black", face = "bold"), axis.title=element_text(size=14,face="bold"),
+          legend.position = "right", legend.text = element_text(size=12), legend.title = element_text(size=14,face="bold"))
+p
+ggsave(paste0(outdir, "/01_cancerCell_comparation.pdf"), plot = p, width = 8, height = 6)
+ggsave(paste0(outdir, "/01_cancerCell_comparation.jpg"), plot = p, width = 8, height = 6)
